@@ -82,7 +82,11 @@ class AuthController extends Controller
 
     public function logout(): JsonResponse
     {
-        JWTAuth::invalidate(JWTAuth::getToken());
+        try {
+            JWTAuth::invalidate(JWTAuth::getToken());
+        } catch (\Exception) {
+            // blacklist desabilitado — sem problema, cliente descarta o token
+        }
         return response()->json(['message' => 'Logout realizado com sucesso.']);
     }
 }
